@@ -46,8 +46,14 @@ Token Lexer::getNextToken() {
     return Token(INTEGER, source.substr(start_index, curr_pos));
   }
 
-  else {
-    return Token(ERROR, "");
+  else if (isalpha(curr_char)) {
+    int start_index = curr_pos;
+    while (isdigit(peek()) || isalpha(peek())) {
+      getNextChar();
+    }
+    return Token(IDENTIFIER, source.substr(start_index, curr_pos));
   }
+
+  else return Token(ERROR, "");
 
 }
