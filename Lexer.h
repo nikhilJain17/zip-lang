@@ -14,8 +14,6 @@ enum TokenType {
   MUL,                  // '*'
   DIV,                  // '/'
 
-  ASSIGN,               // '='
-
   // Comparators
   EQ,                   // '=='
   GT,                   // '>'
@@ -26,9 +24,13 @@ enum TokenType {
   // Assignments
   IDENTIFIER,           // [a-zA-Z][a-zA-Z0-9]*
   INTEGER,              // [0-9]+
+  LET,                  // "LET"
+  ASSIGN,               // '='
 
   // Misc
-  ERROR
+  NEWLINE,
+  ERROR,
+  ENDOFFILE
 
 };
 
