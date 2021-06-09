@@ -47,6 +47,7 @@ public:
 
   TokenType getTokenType() { return this->type; }
   std::string getData() { return this->data; }
+  std::string toString() { return "IMPLEMENT ME!!!!!"; } // TODO implement lol
 };
 
 class Lexer {
@@ -55,9 +56,11 @@ private:
   int curr_pos;
   char curr_char;
 public:
+  Lexer(std::string source) { this->source = source; this->curr_char = source[0]; this->curr_pos = 0; }
   std::string getSource() { return this->source; }
   void getNextChar();
   Token getNextToken();
+  std::vector<Token> tokenize();
   char peek();
 };
 

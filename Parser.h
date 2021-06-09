@@ -6,8 +6,11 @@
 #define ZIP_LANG_PARSER_H
 
 #include <vector>
+#include <map>
 #include "string"
 #include "Lexer.h"
+
+void error(std::string);
 
 // AST node types
 enum NodeType {
@@ -20,16 +23,24 @@ enum NodeType {
   UNARY_IDENTIFIER
 };
 
+//// TODO have a NodeType::toString function or something
+//std::string nodeTypeToString(NodeType t);
+
 class Node {
 private:
   NodeType type;
-  std::string data;           // TODO make this a byte? will need to add more "data" fields later.
-  std::vector<Node> children; // TODO vector?
+  std::string data;                  // TODO make this a byte? will need to add more "data" fields later.
+  std::map<NodeType, Node> children; // TODO put string key in constant file
 
 public:
-  explicit Node(NodeType type) { this->type = type; }
+  explicit Node(NodeType type, std::string data = "") { this->type = type; this->data = data; }
   NodeType getNodeType() { return type; }
-  void addChild(Node child) { this->children.push_back(child); }
+  std::string getNodeData() { return data; }
+  std::string toString() { return "(" /* + nodeTypeToString(this->type) + ", " */ + this->data + ")"; }
+  void addChild(Node child) {
+    if (this->children.count(child.getNodeType()) > 0) error("Duplicate child: " + child.toString() + " of: " + this->toString());
+    this->children.insert((std::pair(child.getNodeType(), child)));
+  }
 };
 
 class Parser {
@@ -37,10 +48,9 @@ private:
   std::vector<Token> tokens;
   int curr_pos;
   Token curr_token;
-
-  void nextToken();
   Token peek();
 
+  void nextToken();
   bool checkTokenType(TokenType expectedType, Token actual) { return expectedType == actual.getTokenType(); }
 
   Node parseStatement();
@@ -50,10 +60,10 @@ private:
   Node parseInteger();
   Node parseIdentifier();
 public:
+  Parser(std::vector<Token> tokens) : curr_token(tokens.at(0)) { this->tokens = tokens; }
   Node parseProgram();
+  std::string printAST() { return "IMPLEMENT ME!!"; } // TODO implement me
 
 };
-
-void error(std::string);
 
 #endif //ZIP_LANG_PARSER_H
