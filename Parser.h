@@ -41,6 +41,10 @@ public:
     if (this->children.count(child.getNodeType()) > 0) error("Duplicate child: " + child.toString() + " of: " + this->toString());
     this->children.insert((std::pair(child.getNodeType(), child)));
   }
+  std::optional<Node> getChild(NodeType type) {
+    if (children.count(type) > 0) return children.at(type);
+    return std::nullopt;
+  }
 };
 
 class Parser {
