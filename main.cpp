@@ -4,7 +4,8 @@
 
 
 #include <iostream>
-#include "Parser.h"
+#include "Codegen.h"
+//#include "Parser.h"
 //#include "Lexer.h"
 
 int main() {
@@ -18,6 +19,10 @@ int main() {
   // Parse
   Parser parser(tokens);
   Node root = parser.parseProgram();
+
+  // Codegen
+  Codegen gen{root.getChild(NodeType::LET_STATEMENT).value()};
+  std::cout << gen.emitStatement(root.getChild(NodeType::LET_STATEMENT).value());
 
 
 }

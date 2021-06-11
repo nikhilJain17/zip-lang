@@ -30,7 +30,7 @@ class Node {
 private:
   NodeType type;
   std::string data;                  // TODO make this a byte? will need to add more "data" fields later.
-  std::map<NodeType, Node> children; // TODO put string key in constant file
+  std::map<NodeType, Node> children; // TODO put string key in constant file instead of NodeType...
 
 public:
   explicit Node(NodeType type, std::string data = "") { this->type = type; this->data = data; }

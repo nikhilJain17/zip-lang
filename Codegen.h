@@ -6,14 +6,13 @@
 #define ZIP_LANG_CODEGEN_H
 
 #include <stack>
+#include <utility>
 #include "Parser.h"
 
 enum SymbolType {
   // TODO think about what types are allowed...
-  INT,
-  FLOAT,
-  STRING,
-  BOOL,
+  INTVAR,
+  STRINGVAR,
   FUNC
 };
 
@@ -21,10 +20,11 @@ class SymTabEntry {
 public: // TODO make these private and do getters/setters
   std::string symbol_name;
   SymbolType type;
+  int fp_offset;                  // offset from stack's frame pointer
 
   SymTabEntry(std::string symbol_name, SymbolType type) {
     this->type = type;
-    this->symbol_name = symbol_name;
+    this->symbol_name = std::move(symbol_name);
   }
 
 };
@@ -33,7 +33,11 @@ public: // TODO make these private and do getters/setters
 class ScopedSymbolTable {
 private:
 public:
+  int curr_fp_offset;           // how much have we already allocated in this stack frame...todo can we just do SP - FP?
   std::map<std::string, SymTabEntry> scoped_sym_tab;
+  ScopedSymbolTable() {
+    curr_fp_offset = 0;
+  }
 };
 
 class Codegen {
